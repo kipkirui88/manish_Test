@@ -10,7 +10,7 @@ from manish.contact import *
 
 app = FastAPI()
 load_dotenv()
-VERIFY_TOKEN = "EAAI7KQfphY0BOyNZAwXIPHSQcvISOKZBwMukn7fJqYDZA2HFfIdGEyRxEYTFGtgywOaychrSLHnCSQJde764Y8q198fVvYP0BcEV6NuVGj3nxtnM1SA3YEbHnGgta2ZBH4VA24SWp5TKHfqlPUYIMpzqFZAW2ZAJAexkff5a76DWt6u5JC29PTogoGYkrF0QBadZAoP5WTxxtBRF3lXZCES8hohQqzJcpiVgeVoZD"
+VERIFY_TOKEN = "koechbot"
 manish = MaNish(os.getenv("TOKEN"), phone_number_id=os.getenv("PHONE_NUMBER_ID"))
 
 def get_time_of_day():

@@ -1,14 +1,12 @@
 import os
 from datetime import datetime
-from fastapi import FastAPI, Request
+from flask import Flask, request
 from loguru import logger
-import uvicorn
 from manish import MaNish, Button, Row, Section, Action, ButtonEncoder
-from fastapi.responses import HTMLResponse
 from manish.contact import *
-from fastapi.responses import PlainTextResponse
+from flask import Response
 
-app = FastAPI()
+app = Flask(__name__)
 
 # Replace load_dotenv() with setting environment variables directly
 os.environ["TOKEN"] = "EAAI7KQfphY0BO1HDFPwGD82SciKtfHLHG2qwX2jxfPqpMnOOqZCZAnNxtdLtUuXaQ7otvLZC71QYiS1ZAPLksTfzHHFeN9heU8dKk3ZC6ZCDkhce7JsEZC8Fly0ciizH3tGV2iryEIrxWUdusJ1zXoudZC7PGzeInmfbJedYf8pZAdKNQi8iBJEwTuOm2DmmZA3CUOzqU0oWNw4hjLX65M4KrCapyjXEVPtsaxNAEZD"
@@ -27,20 +25,39 @@ def get_time_of_day():
     else:
         return "evening"
 
-@app.get("/", include_in_schema=False, response_class=PlainTextResponse)
-async def verify(request: Request):
-    if (
-        request.query_params.get('hub.mode') == "subscribe"
-        and request.query_params.get("hub.challenge")
-        and request.query_params.get('hub.verify_token') == VERIFY_TOKEN
-    ):
-        return PlainTextResponse(content=request.query_params.get('hub.challenge'))
-    return PlainTextResponse(content="Hello world", status_code=200)
+@app.route("/", methods=["GET"])
+def verify():
+    try:
+        if request.method == 'GET':
+            if request.args.get("hub.mode") == "subscribe" and request.args.get("hub.challenge"):
+                if not request.args.get("hub.verify_token") == "koechbot":
+                    return "Verification token mismatch", 403
+                return request.args['hub.challenge'], 200
 
+        print(request)
+        res = request.get_json()
+        print(res)
 
-@app.post("/", include_in_schema=False)
-async def webhook(request: Request):
-    data = await request.json()
+        if 'entry' in res and 'changes' in res['entry'][0] and 'value' in res['entry'][0]['changes'][0] and 'messages' in res['entry'][0]['changes'][0]['value']:
+            user_query = res['entry'][0]['changes'][0]['value']['messages'][0]['text']['body']
+
+            # Check if 'contacts' key is present
+            if 'contacts' in res['entry'][0]['changes'][0]['value']['messages'][0]:
+                wa_id = res['entry'][0]['changes'][0]['value']['messages'][0]['contacts'][0]['wa_id']
+            else:
+                wa_id = res['entry'][0]['changes'][0]['value']['messages'][0]['from']
+
+            # Handle user response
+            webhook(wa_id)
+
+    except Exception as e:
+        print(f"Error: {e}")
+
+    return '200 OK HTTPS.'
+
+@app.route("/", methods=["POST"])
+def webhook():
+    data = request.get_json()
     changed_field = manish.changed_field(data)
 
     if changed_field == "messages":
@@ -113,11 +130,12 @@ async def webhook(request: Request):
                     action = Action("Choose from the List", sections)
                     button = Button(greeting, "Select any category below:", "My Rovan", action)
                     data = ButtonEncoder().encode(button)
-                    manish.send_button(data, mobile)# Ask the user to enter the quantity
+                    manish.send_button(data, mobile)
+                    # Ask the user to enter the quantity
                     ask_quantity_message = "Please enter the quantity for the selected product."
                     manish.send_message(message=ask_quantity_message, recipient_id=mobile)
 
-                    # Process the interactive message and determine the response
+                # Process the interactive message and determine the response
                 elif message_id == "Speak to Agent":
                     # Provide contact information for the agent
                     phones = [Phone(phone="+254727176688", type="CELL")]
@@ -127,9 +145,6 @@ async def webhook(request: Request):
                     contact = Contact(name=name, addresses=addresses, emails=emails, phones=phones)
                     contact_data = ContactEncoder().encode([contact])
                     manish.send_contacts(contact_data, mobile)
-               
-                                
-                                
 
             else:
                 logger.info(f"{mobile} sent {message_type} ")
@@ -145,4 +160,4 @@ async def webhook(request: Request):
 
 if __name__ == '__main__':
     logger.info("Whatsapp Webhook is up and running")
-    uvicorn.run(app, host="0.0.0.0", port=7020)
+    app.run(host="0.0.0.0", port=7020)

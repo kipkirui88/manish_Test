@@ -1,14 +1,11 @@
 import os
 from datetime import datetime
-from fastapi import FastAPI, Request
+from flask import Flask, request
 from loguru import logger
-import uvicorn
 from manish import MaNish, Button, Row, Section, Action, ButtonEncoder
-from fastapi.responses import HTMLResponse
-from manish.contact import *
-from fastapi.responses import PlainTextResponse
+from flask import Response
 
-app = FastAPI()
+app = Flask(__name__)
 
 # Replace load_dotenv() with setting environment variables directly
 os.environ["TOKEN"] = "EAAI7KQfphY0BO1HDFPwGD82SciKtfHLHG2qwX2jxfPqpMnOOqZCZAnNxtdLtUuXaQ7otvLZC71QYiS1ZAPLksTfzHHFeN9heU8dKk3ZC6ZCDkhce7JsEZC8Fly0ciizH3tGV2iryEIrxWUdusJ1zXoudZC7PGzeInmfbJedYf8pZAdKNQi8iBJEwTuOm2DmmZA3CUOzqU0oWNw4hjLX65M4KrCapyjXEVPtsaxNAEZD"
@@ -27,20 +24,19 @@ def get_time_of_day():
     else:
         return "evening"
 
-@app.get("/", include_in_schema=False, response_class=PlainTextResponse)
-async def verify(request: Request):
+@app.route("/", methods=["GET"])
+def verify():
     if (
-        request.query_params.get('hub.mode') == "subscribe"
-        and request.query_params.get("hub.challenge")
-        and request.query_params.get('hub.verify_token') == VERIFY_TOKEN
+        request.args.get('hub.mode') == "subscribe"
+        and request.args.get("hub.challenge")
+        and request.args.get('hub.verify_token') == VERIFY_TOKEN
     ):
-        return PlainTextResponse(content=request.query_params.get('hub.challenge'))
-    return PlainTextResponse(content="Hello world", status_code=200)
+        return Response(request.args.get('hub.challenge'), content_type='text/plain')
+    return Response("Hello world", status=200, content_type='text/plain')
 
-
-@app.post("/", include_in_schema=False)
-async def webhook(request: Request):
-    data = await request.json()
+@app.route("/", methods=["POST"])
+def webhook():
+    data = request.get_json()
     changed_field = manish.changed_field(data)
 
     if changed_field == "messages":
@@ -113,11 +109,12 @@ async def webhook(request: Request):
                     action = Action("Choose from the List", sections)
                     button = Button(greeting, "Select any category below:", "My Rovan", action)
                     data = ButtonEncoder().encode(button)
-                    manish.send_button(data, mobile)# Ask the user to enter the quantity
+                    manish.send_button(data, mobile)
+                    # Ask the user to enter the quantity
                     ask_quantity_message = "Please enter the quantity for the selected product."
                     manish.send_message(message=ask_quantity_message, recipient_id=mobile)
 
-                    # Process the interactive message and determine the response
+                # Process the interactive message and determine the response
                 elif message_id == "Speak to Agent":
                     # Provide contact information for the agent
                     phones = [Phone(phone="+254727176688", type="CELL")]
@@ -127,9 +124,6 @@ async def webhook(request: Request):
                     contact = Contact(name=name, addresses=addresses, emails=emails, phones=phones)
                     contact_data = ContactEncoder().encode([contact])
                     manish.send_contacts(contact_data, mobile)
-               
-                                
-                                
 
             else:
                 logger.info(f"{mobile} sent {message_type} ")
@@ -145,4 +139,4 @@ async def webhook(request: Request):
 
 if __name__ == '__main__':
     logger.info("Whatsapp Webhook is up and running")
-    uvicorn.run(app, host="0.0.0.0", port=7020)
+    app.run(host="0.0.0.0", port=7020)

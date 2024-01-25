@@ -4,12 +4,15 @@ from fastapi import FastAPI, Request
 from loguru import logger
 import uvicorn
 from manish import MaNish, Button, Row, Section, Action, ButtonEncoder
-from dotenv import load_dotenv
 from fastapi.responses import HTMLResponse
 from manish.contact import *
 
 app = FastAPI()
-load_dotenv()
+
+# Replace load_dotenv() with setting environment variables directly
+os.environ["TOKEN"] = "EAAI7KQfphY0BO1HDFPwGD82SciKtfHLHG2qwX2jxfPqpMnOOqZCZAnNxtdLtUuXaQ7otvLZC71QYiS1ZAPLksTfzHHFeN9heU8dKk3ZC6ZCDkhce7JsEZC8Fly0ciizH3tGV2iryEIrxWUdusJ1zXoudZC7PGzeInmfbJedYf8pZAdKNQi8iBJEwTuOm2DmmZA3CUOzqU0oWNw4hjLX65M4KrCapyjXEVPtsaxNAEZD"
+os.environ["PHONE_NUMBER_ID"] = "107082732389411"
+
 VERIFY_TOKEN = "koechbot"
 manish = MaNish(os.getenv("TOKEN"), phone_number_id=os.getenv("PHONE_NUMBER_ID"))
 

@@ -3,6 +3,7 @@ from datetime import datetime
 from flask import Flask, request
 from loguru import logger
 from manish import MaNish, Button, Row, Section, Action, ButtonEncoder
+from manish.contact import *
 from flask import Response
 
 app = Flask(__name__)
@@ -26,13 +27,33 @@ def get_time_of_day():
 
 @app.route("/", methods=["GET"])
 def verify():
-    if (
-        request.args.get('hub.mode') == "subscribe"
-        and request.args.get("hub.challenge")
-        and request.args.get('hub.verify_token') == VERIFY_TOKEN
-    ):
-        return Response(request.args.get('hub.challenge'), content_type='text/plain')
-    return Response("Hello world", status=200, content_type='text/plain')
+    try:
+        if request.method == 'GET':
+            if request.args.get("hub.mode") == "subscribe" and request.args.get("hub.challenge"):
+                if not request.args.get("hub.verify_token") == "koechbot":
+                    return "Verification token mismatch", 403
+                return request.args['hub.challenge'], 200
+
+        print(request)
+        res = request.get_json()
+        print(res)
+
+        if 'entry' in res and 'changes' in res['entry'][0] and 'value' in res['entry'][0]['changes'][0] and 'messages' in res['entry'][0]['changes'][0]['value']:
+            user_query = res['entry'][0]['changes'][0]['value']['messages'][0]['text']['body']
+
+            # Check if 'contacts' key is present
+            if 'contacts' in res['entry'][0]['changes'][0]['value']['messages'][0]:
+                wa_id = res['entry'][0]['changes'][0]['value']['messages'][0]['contacts'][0]['wa_id']
+            else:
+                wa_id = res['entry'][0]['changes'][0]['value']['messages'][0]['from']
+
+            # Handle user response
+            webhook(wa_id)
+
+    except Exception as e:
+        print(f"Error: {e}")
+
+    return '200 OK HTTPS.'
 
 @app.route("/", methods=["POST"])
 def webhook():

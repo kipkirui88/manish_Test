@@ -6,6 +6,7 @@ import uvicorn
 from manish import MaNish, Button, Row, Section, Action, ButtonEncoder
 from fastapi.responses import HTMLResponse
 from manish.contact import *
+from fastapi.responses import PlainTextResponse
 
 app = FastAPI()
 
@@ -26,15 +27,16 @@ def get_time_of_day():
     else:
         return "evening"
 
-@app.get("/", include_in_schema=False)
+@app.get("/", include_in_schema=False, response_class=PlainTextResponse)
 async def verify(request: Request):
     if (
         request.query_params.get('hub.mode') == "subscribe"
         and request.query_params.get("hub.challenge")
         and request.query_params.get('hub.verify_token') == VERIFY_TOKEN
     ):
-        return int(request.query_params.get('hub.challenge'))
-    return "Hello world", 200
+        return PlainTextResponse(content=request.query_params.get('hub.challenge'))
+    return PlainTextResponse(content="Hello world", status_code=200)
+
 
 @app.post("/", include_in_schema=False)
 async def webhook(request: Request):

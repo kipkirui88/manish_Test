@@ -76,16 +76,19 @@ def webhook():
                 time_of_day = get_time_of_day()
 
                 # Greeting based on the time of day
-                greeting = f"Hello {name}! Welcome to Rovan!🏗️. How can I assist you today?"
+                greeting = f"Dear {name}! Welcome to Ruto Campaign Bot."
 
                 # Sending the button in response to a text message
                 rows = [
-                    Row("Browse Products", "Browse Products", ""),
-                    Row("Speak to Agent", "Speak to Agent", ""),
+                    Row("My Manifesto", "My Manifesto", ""),
+                    Row("My Achievements", "My Achievements", ""),
+                    Row("My Political History", "My Political History", ""),
+                    Row("My Vision for Kenya", "My Vision for Kenya", ""),
+                    Row("My Mission for Kenya", "My Mission for Kenya", ""),
                 ]
-                sections = [Section("Rovan", rows)]
+                sections = [Section("Koech", rows)]
                 action = Action("Choose from the List", sections)
-                button = Button(greeting, "Select an option from the List below:", "My Rovan", action)
+                button = Button(greeting, "Tap to Select:", "My Campaign", action)
                 data = ButtonEncoder().encode(button)
                 manish.send_button(data, mobile)
 
@@ -97,27 +100,28 @@ def webhook():
                 logger.info(f"Interactive Message; {message_id}: {message_text}")
                 
                 # Process the interactive message and determine the response
-                if message_id == "Browse Products":
+                if message_id == "My Manifesto":
                     # Greeting based on the time of day
-                    greeting = f"Rovan Products Categories 🛍️."
+                    greeting = f"Please select your County to proceed."
 
                     # Sending the button in response to the selected option
                     rows = [
-                        Row("Cement", "Cement", ""),
-                        Row("Bricks", "Bricks", ""),
-                        Row("Iron Sheets", "Iron Sheets", ""),
+                        Row("Nairobi", "Nairobi", ""),
+                        Row("Mombasa", "Mombasa", ""),
+                        Row("Kajiado", "Kajiado", ""),
+                        Row("Back To Main Menu", "Back To Main Menu", ""),
                         # Add more rows as needed
                     ]
-                    sections = [Section("Rovan", rows)]
+                    sections = [Section("Koech", rows)]
                     action = Action("Choose from the List", sections)
-                    button = Button(greeting, "Select any category below:", "My Rovan", action)
+                    button = Button(greeting, "Select any category below:", "My Campaign", action)
                     data = ButtonEncoder().encode(button)
                     manish.send_button(data, mobile)
                 
                 # Process the interactive message and determine the response
-                elif message_id == "Cement":
+                elif message_id == "Kembu":
                     # Greeting based on the time of day
-                    greeting = f"Rovan Products 🛍️."
+                    greeting = f"My 🛍️."
 
                     # Sending the button in response to the selected option
                     rows = [

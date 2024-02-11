@@ -9,7 +9,7 @@ from flask import Response
 app = Flask(__name__)
 
 # Replace load_dotenv() with setting environment variables directly
-os.environ["TOKEN"] = "EAAI7KQfphY0BO0IQctEbU9m9p38Vq39tKgfGYidwapkScO4XI8sC0JOC8WAq17zOebt5lRFHgvPgrbkFVjXQPjWBiews70IKZB9rWTZBbsk6wPag7GfpAq6m9ensSVZBqa3szRCSJ0KjPXawgs6nMLqwIqDyTsi3IyntypyL6JCnGD4WcobPfDVnKmY2SPA2HPteBlfgcLCeTU0y1BUxwqH2FUHyLohT8cZD"
+os.environ["TOKEN"] = "EAAI7KQfphY0BO0AFVWqjfZA2ur3dKBR7vWJpYUbjoS4n9YYLdkZAJiu1q26VyIczfP6nSkHAMZCinnRv7UcyImY6NVVGLrSTZBTZBZCJdPzd6lTaJWJ6lQ4fxNtaTlyKsZC6z7aNbU7JCNYflVYZAaPdPZBqVaM6UZCPnQND5pAQET9PFlem1hjWZBW4dQ3v09ZAYALrQuRR07PPGBLCEhvgmThKDyEEL9ZACRPZBM1H13"
 os.environ["PHONE_NUMBER_ID"] = "107082732389411"
 
 VERIFY_TOKEN = "koechbot"
@@ -54,6 +54,7 @@ def verify():
         print(f"Error: {e}")
 
     return '200 OK HTTPS.'
+
 @app.route("/", methods=["POST"])
 def webhook():
     data = request.get_json()

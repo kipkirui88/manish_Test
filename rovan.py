@@ -9,7 +9,7 @@ from flask import Response
 app = Flask(__name__)
 
 # Replace load_dotenv() with setting environment variables directly
-os.environ["TOKEN"] = "EAAI7KQfphY0BO1HDFPwGD82SciKtfHLHG2qwX2jxfPqpMnOOqZCZAnNxtdLtUuXaQ7otvLZC71QYiS1ZAPLksTfzHHFeN9heU8dKk3ZC6ZCDkhce7JsEZC8Fly0ciizH3tGV2iryEIrxWUdusJ1zXoudZC7PGzeInmfbJedYf8pZAdKNQi8iBJEwTuOm2DmmZA3CUOzqU0oWNw4hjLX65M4KrCapyjXEVPtsaxNAEZD"
+os.environ["TOKEN"] = "EAAI7KQfphY0BO1TUPfwNTRsqCzOsoeLksAxjIYyBZCVI3bATIoDKcTJ2tc2h26MD3AxbJxUduYjr5rNC59pjoYCFTe9iCWcazKiYHVdGhfZCDMr8bjbzob3IQGloQjuvAW00meuEC579pDUcg61rBeEgSZBq1sE7CD32euOZCAdP3ZC5lmxDtS4jABcO4sKlfROyqvKikIpHTeSdcv843eTy3NZC5198UDfhc2"
 os.environ["PHONE_NUMBER_ID"] = "107082732389411"
 
 VERIFY_TOKEN = "koechbot"

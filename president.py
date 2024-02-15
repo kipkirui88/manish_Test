@@ -75,6 +75,23 @@ def send_document(document_url, wa_id):
     print(response.text)
 
 
+def send_image(image_url, wa_id):
+
+    headers = {
+        'Authorization': 'Bearer EAAI7KQfphY0BOxk5Sn8kZAgqFCq101eUO2TZAvJCrIeFlq9lQtTgOTeEhGUrtfO19GzkZBjrEHl8jIgEfErlYoaFkePjrueHucuaS4ZAHowteeYI9ivvMGjfp1MxG2CN3akjOHhjIQISjA4uDQDiu2UcsNPWz8iUCzhX8AHqSDvX4KGaZA54vZBQIjETxixdqGK47plZCMnpgPEY3YMltz2mevHjlNiFxMDFAQZD',
+    }
+    json_data = {
+        'messaging_product': 'whatsapp',
+        'to': wa_id,   # example 91<your number>
+        'type': 'image',
+        "image": {
+            "link": image_url
+        }
+    }
+    response = requests.post(
+        'https://graph.facebook.com/v17.0/210203168844024/messages', headers=headers, json=json_data)
+    print(response.text)
+
 @app.route("/", methods=["POST"])
 def webhook():
     data = request.get_json()
@@ -224,8 +241,8 @@ def health_care(mobile):
     send_document(document_url, mobile)
 
     # # Example usage for sending an image
-    # image_url = "https://wajibikamkenya.com/elections/content/photos/89031705986822.jpeg"
-    # send_media(image_url, "image", "254727176688")
+    image_url = "https://wajibikamkenya.com/elections/content/photos/89031705986822.jpeg"
+    send_image(image_url, mobile)
     
 if __name__ == '__main__':
     logger.info("Whatsapp Webhook is up and running")

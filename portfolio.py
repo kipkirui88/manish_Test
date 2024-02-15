@@ -9,7 +9,7 @@ from flask import Response
 app = Flask(__name__)
 
 # Replace load_dotenv() with setting environment variables directly
-os.environ["TOKEN"] = "EAAI7KQfphY0BO0AFVWqjfZA2ur3dKBR7vWJpYUbjoS4n9YYLdkZAJiu1q26VyIczfP6nSkHAMZCinnRv7UcyImY6NVVGLrSTZBTZBZCJdPzd6lTaJWJ6lQ4fxNtaTlyKsZC6z7aNbU7JCNYflVYZAaPdPZBqVaM6UZCPnQND5pAQET9PFlem1hjWZBW4dQ3v09ZAYALrQuRR07PPGBLCEhvgmThKDyEEL9ZACRPZBM1H13"
+os.environ["TOKEN"] = "EAAI7KQfphY0BO972hBBVhXtsZB1McoOuNlYN1AjqZBP6BKH1xQGCZBcI7v5nMrzYdd4fTsBvlnTGv7ZCvXGg8Ot30PJNnsHUHwJFJ24VjsBZBwgJurfo2lsfJsbZAmaL2YnsHN2zvrlWoavZBZCfhft6dpUDebPHN3u3bsqvewPNEUfYZCbyFBR3uLcyGjZCVH3NccPNpULYewWzMWKZCnCpq5eK5knRtKd3COD0Q4ZD"
 os.environ["PHONE_NUMBER_ID"] = "107082732389411"
 
 VERIFY_TOKEN = "koechbot"
@@ -80,8 +80,8 @@ def webhook():
 
                 # Sending the button in response to a text message
                 rows = [
-                    Row("My Background", "My Background", ""),
-                    Row("My Achievements", "My Achievements", ""),
+                    Row("My Background Careerkoec", "My Background Careerkoec", ""),
+                    Row("My Achievements koech", "My Achievements Koech", ""),
                     Row("My Skills", "My Skills", ""),
                     Row("Projects", "Projects", ""),
                     Row("Contact Me", "Contact Me", ""),
@@ -100,7 +100,7 @@ def webhook():
                 logger.info(f"Interactive Message; {message_id}: {message_text}")
                 
                 # Customize the responses based on user selections
-                if message_id == "My Background":
+                if message_id == "My Background Careerkoec":
                     manish.send_message(f"🚀 *Koech's Inspiring Career Journey in Software Development* 🚀\n"
                     "Embark on a profound journey through my life—a testament to resilience, passion, and the triumph of the human spirit in the realm of software development."
                     " From humble beginnings, my passion for coding became the compass guiding me through the twists and turns of this dynamic field."

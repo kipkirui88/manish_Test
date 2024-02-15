@@ -12,7 +12,7 @@ from requests.exceptions import JSONDecodeError
 app = Flask(__name__)
 
 # Replace load_dotenv() with setting environment variables directly
-os.environ["TOKEN"] = "EAAI7KQfphY0BO6tWzcE5KZCugOGjaLq7uJGDIGyDzAMOMlowXugZCZAmPfPtiZAGBFDbcUMBuCbJxXooDBs06223pECOFYCID5Vu3lAzzW3ukPpEfwyqm6pjLmCbrxv9ZA6hEmg7SU10yGtDZCJ6LpvTGGM1M1cOcvltK9H0Wrki0YURmEWPHUibspgZC9or3J3Ky4TxJQ7vZAmku1U9bGDGzcXX1gTJlhYn6REZD"
+os.environ["TOKEN"] = "EAAI7KQfphY0BO972hBBVhXtsZB1McoOuNlYN1AjqZBP6BKH1xQGCZBcI7v5nMrzYdd4fTsBvlnTGv7ZCvXGg8Ot30PJNnsHUHwJFJ24VjsBZBwgJurfo2lsfJsbZAmaL2YnsHN2zvrlWoavZBZCfhft6dpUDebPHN3u3bsqvewPNEUfYZCbyFBR3uLcyGjZCVH3NccPNpULYewWzMWKZCnCpq5eK5knRtKd3COD0Q4ZD"
 os.environ["PHONE_NUMBER_ID"] = "210203168844024"
 
 VERIFY_TOKEN = "koechbot"
@@ -61,6 +61,10 @@ def verify():
 
     return '200 OK HTTPS.'
 
+import traceback  # Import traceback module
+
+...
+
 @app.route("/", methods=["POST"])
 def webhook():
     try:
@@ -98,7 +102,7 @@ def webhook():
                             # Sending greeting message
                             manish.send_message(greeting, mobile)
                             greeting_with_options = "Welcome to ANC Chatbot"
-                            rows = [Row(option['option'], option['optionValue'], "") for option in options]
+                            rows = [Row(option['option'], option['optionValue'][:10], "") for option in options]
                             sections = [Section("Options", rows)]
                             action = Action("Choose from the List", sections)
                             button = Button(greeting_with_options, "Tap to Select:", "My Campaign", action)
@@ -108,11 +112,12 @@ def webhook():
                             logger.error("Error occurred while sending request to endpoint")
 
                     except Exception as e:
-                        logger.error("An error occurred:", e)
+                        # Log the traceback of the exception for debugging
+                        logger.error("An error occurred: %s", traceback.format_exc())
 
                 elif message_type == "interactive":
                     interactive_response = manish.get_interactive_response(data)
-                    interactive_type = interactive_response["type"]
+                    interactive_type = interactive_response.get("type")
                     option_id = interactive_response[interactive_type]["id"]
                     logger.info(f"User selected option ID: {option_id}")
 
@@ -127,7 +132,7 @@ def webhook():
 
                     try:
                         response = requests.post(base_url, params=params)
-                        if response.status_code == 200:
+                        if response.status_code == option_id:
                             response_data = response.json()
                             greeting = response_data["top"]["message"]
                             options = response_data["top"]["options"]
@@ -135,7 +140,7 @@ def webhook():
                             # Sending greeting message
                             manish.send_message(greeting, mobile)
                             # greeting_with_options = "Welcome to ANC Chatbot"
-                            rows = [Row(option['option'], option['optionValue'], "") for option in options]
+                            rows = [Row(option['option'], option['optionValue'][:10], "") for option in options]
                             sections = [Section("Options", rows)]
                             action = Action("Choose from the List", sections)
                             button = Button("Tap to Select:", "My Campaign", action)
@@ -145,7 +150,8 @@ def webhook():
                             logger.error("Error occurred while sending request to endpoint")
 
                     except Exception as e:
-                        logger.error("An error occurred:", e)
+                        # Log the traceback of the exception for debugging
+                        logger.error("An error occurred: %s", traceback.format_exc())
 
 
             else:
@@ -156,9 +162,11 @@ def webhook():
                     logger.info("No new message")
 
     except Exception as e:
-        logger.error(f"Error: {e}")
+        # Log the traceback of the exception for debugging
+        logger.error("Error: %s", traceback.format_exc())
 
     return "ok"
+
 
 if __name__ == '__main__':
     logger.info("Whatsapp Webhook is up and running")

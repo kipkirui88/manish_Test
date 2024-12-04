@@ -14,13 +14,13 @@ from requests_toolbelt.multipart.encoder import MultipartEncoder
 from typing import Optional, Dict, Any, List, Union, Tuple, Callable
 
 
-class MaNish(object):
+class Kwiz(object):
 
 
     def __init__(self,token:str=None,phone_number_id:str=None):
         try:
             """
-            Init the MaNish (Whatsapp) object.
+            Init the Kwiz (Whatsapp) object.
 
             Args:
                 token[str]: Token for the Whatsapp cloud API (Make sure to generate permanent one)
@@ -35,7 +35,7 @@ class MaNish(object):
                 "Authorization": "Bearer {}".format(self.token),
             }
         except Exception as e:
-            logger.error("Error initializing MaNish: " + str(e))
+            logger.error("Error initializing Kwiz: " + str(e))
 
 
     def set_status(self, message_id):
@@ -45,9 +45,9 @@ class MaNish(object):
             message_id[str]: The id of the message
         Example:
             ```python
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> manish.set_status(message_id)
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> kwiz.set_status(message_id)
 
         """
         try:
@@ -64,7 +64,7 @@ class MaNish(object):
             logger.error("aw snap something went wrong: " + str(e))
             return '{"error":"' + str(e)  + '"}'
 
-    def send_message(self, message, recipient_id, recipient_type="individual", preview_url=True):
+    def send_msg(self, message, recipient_id, recipient_type="individual", preview_url=True):
         """
          Sends a text message to a WhatsApp user
          Args:
@@ -74,10 +74,10 @@ class MaNish(object):
                 preview_url[bool]: Whether to send a preview url or not
         Example:
             ```python
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> manish.send_message("Hello World", "1122334455667")
-            >>> manish.send_message("Hello World", "1122334455667", preview_url=False)
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> kwiz.send_message("Hello World", "1122334455667")
+            >>> kwiz.send_message("Hello World", "1122334455667", preview_url=False)
         """
         try:
             data = {
@@ -110,9 +110,9 @@ class MaNish(object):
             caption[str]: Caption of the video
             link[bool]: Whether to send a video id or a video link, True means that the video is an id, False means that the video is a link
         example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> manish.send_video("https://www.youtube.com/watch?v=ul_9qe_fiTY", "1122334455667")
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> kwiz.send_video("https://www.youtube.com/watch?v=ul_9qe_fiTY", "1122334455667")
         """
         try:
             if validators.url(video):
@@ -156,9 +156,9 @@ class MaNish(object):
             caption[str]: Caption of the document
             link[bool]: Whether to send a document id or a document link, True means that the document is an id, False means that the document is a link
         Example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> manish.send_document("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", "1122334455667")
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> kwiz.send_document("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", "1122334455667")
         """
         try:
             if validators.url(document):
@@ -201,9 +201,9 @@ class MaNish(object):
             recipient_id[str]: Phone number of the user with country code wihout +
             link[bool]: Whether to send an audio id or an audio link, True means that the audio is an id, False means that the audio is a link
         Example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> manish.send_audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3", "1122334455667")
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> kwiz.send_audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3", "1122334455667")
         """
         try:
             if validators.url(audio):
@@ -249,9 +249,9 @@ class MaNish(object):
             caption[str]: Caption of the image
             link[bool]: Whether to send an image id or an image link, True means that the image is an id, False means that the image is a link
         Example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> manish.send_image("https://i.imgur.com/Fh7XVYY.jpeg", "1122334455667")
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> kwiz.send_image("https://i.imgur.com/Fh7XVYY.jpeg", "1122334455667")
         """
         try:
             if validators.url(image):
@@ -300,9 +300,9 @@ class MaNish(object):
             caption[str]: Caption of the image
             link[bool]: Whether to send an image id or an image link, True means that the image is an id, False means that the image is a link
         Example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> manish.send_image("https://i.imgur.com/COXQuEz.jpeg", "1122334455667")
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> kwiz.send_image("https://i.imgur.com/COXQuEz.jpeg", "1122334455667")
         """
         try:
             if validators.url(sticker):
@@ -354,9 +354,9 @@ class MaNish(object):
 
         Example:
             ```python
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> manish.send_reaction("\uD83D\uDE00", "wamid.HBgLM...", "5511999999999")
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> kwiz.send_reaction("\uD83D\uDE00", "wamid.HBgLM...", "5511999999999")
 
         """
         try:
@@ -387,8 +387,8 @@ class MaNish(object):
             contacts(List[Dict[Any, Any]]): List of contacts to send
             recipient_id(str): Phone number of the user with country code wihout +
         Example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
             >>> contacts = Contacts Object
         REFERENCE: https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages#contacts-object
         """
@@ -419,9 +419,9 @@ class MaNish(object):
             location: Location object (If no coordinates provided, it will be generated using geopy)
             recipient_id[str]: Phone number of the user with country code wihout +
         Example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> manish.send_location(Location, "1122334455667")
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> kwiz.send_location(Location, "1122334455667")
         """
         try:
             data = {
@@ -462,9 +462,9 @@ class MaNish(object):
             lang[str]: Language of the template message
             components[dict]: Dictionary of components to be sent to the user
         Example:
-            >>> from namish import MaNish
-            >>> namish = MaNish(token, phone_number_id)
-            >>> MaNish.send_template("hello_world", "1122334455667", lang="en_US"))
+            >>> from namish import Kwiz
+            >>> namish = Kwiz(token, phone_number_id)
+            >>> kwiz.send_template("hello_world", "1122334455667", lang="en_US"))
         """
         try:
             data = {
@@ -522,7 +522,7 @@ class MaNish(object):
             logger.error("aw snap something went wrong: " + str(e))
             return '{"error":"' + str(e)  + '"}'
 
-    def send_button(self, button, recipient_id):
+    def send_list(self, button, recipient_id):
         """
         Sends an interactive buttons message to a WhatsApp user
         Args:
@@ -550,6 +550,103 @@ class MaNish(object):
         except Exception as e:
             logger.error("aw snap something went wrong: " + str(e))
             return '{"error":"' + str(e)  + '"}'
+    
+    def send_button(self, recipient_id, body_text, buttons):
+        """
+        Sends an interactive button list message to a WhatsApp user.
+
+        Args:
+            recipient_id (str): The phone number of the recipient (without '+').
+            body_text (str): The text to display in the body of the message.
+            buttons (list): A list of button dictionaries with 'id' and 'title'.
+        
+        Returns:
+            Response (dict): The response from the API call.
+        """
+        # Constructing the button list
+        button_list = []
+        for button in buttons:
+            button_list.append({
+                "type": "reply",
+                "reply": {
+                    "id": button['id'],
+                    "title": button['title']
+                }
+            })
+
+        # Creating the message data
+        json_data = {
+            "messaging_product": "whatsapp",
+            "recipient_type": "individual",
+            "to": recipient_id,
+            "type": "interactive",
+            "interactive": {
+                "type": "button",
+                "body": {
+                    "text": body_text
+                },
+                "action": {
+                    "buttons": button_list
+                }
+            }
+        }
+
+        # Sending the request
+        response = requests.post(self.url, headers=self.headers, json=json_data)
+        
+        if response.status_code == 200:
+            print(f"Buttons sent successfully to {recipient_id}")
+            return response.json()
+        else:
+            print(f"Failed to send buttons to {recipient_id}")
+            print(f"Status code: {response.status_code}")
+            print(f"Response: {response.text}")
+            return response.json()
+        
+    def send_catalog(self, catalog, recipient_id):
+        """
+        Sends a catalog message to a WhatsApp user
+        Args:
+            catalog[dict]: Generate catalog using the required structure and pass it as a string.
+            recipient_id[str]: Phone number of the user with country code without '+'
+        """
+        try:
+            # Convert catalog string to a dictionary
+            catalog = json.loads(catalog)
+            
+            # Prepare data for the catalog message
+            data = {
+                "messaging_product": "whatsapp",
+                "to": recipient_id,
+                "type": "interactive",
+                "interactive": {
+                    "type": "catalog_message",  # Correct type for sending a catalog
+                    "catalog": catalog  # The catalog details (e.g., products or services)
+                }
+            }
+
+            # Log sending process
+            logger.info(f"Sending catalog to {recipient_id}")
+
+            # Send POST request to WhatsApp API
+            r = requests.post(self.url, headers=self.headers, json=data)
+            
+            # Check for successful response
+            if r.status_code == 200:
+                logger.info(f"Catalog sent to {recipient_id}")
+                return r.json()
+
+            # If something went wrong, log and return error details
+            logger.info(f"Catalog not sent to {recipient_id}")
+            logger.info(f"Status code: {r.status_code}")
+            logger.info(f"Response: {r.json()}")
+            return r.json()
+        
+        except Exception as e:
+            logger.error("Oops, something went wrong: " + str(e))
+            return '{"error":"' + str(e) + '"}'
+
+    
 
     def delete_media(self, media_id: str):
         """
@@ -577,8 +674,8 @@ class MaNish(object):
         Args:
             media[str]: Path of the media to be uploaded
         Example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
             >>> whatsapp.upload_media("/path/to/media")
         Returns:
             >>> Media ID
@@ -632,9 +729,9 @@ class MaNish(object):
         Returns:
             str: Media url
         Example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> manish.query_media_url("media_id")
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> kwiz.query_media_url("media_id")
         """
         try:
             logger.info(f"Querying media url for {media_id}")
@@ -661,10 +758,10 @@ class MaNish(object):
         Returns:
             str: Media url
         Example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> manish.download_media("media_url", "image/jpeg")
-            >>> manish.download_media("media_url", "video/mp4", "path/to/file") #do not include the file extension
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> kwiz.download_media("media_url", "image/jpeg")
+            >>> kwiz.download_media("media_url", "video/mp4", "path/to/file") #do not include the file extension
         """
         try:
             r = requests.get(media_url, headers=self.headers)
@@ -702,9 +799,9 @@ class MaNish(object):
         Returns:
             str: The name of the sender
         Example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> mobile = manish.get_name(data)
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> mobile = kwiz.get_name(data)
         """
         try:
             contact = self.preprocess(data)
@@ -723,9 +820,9 @@ class MaNish(object):
         Returns:
             str: The text message received from the sender
         Example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> message = manish.get_message(data)
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> message = kwiz.get_message(data)
         """
         try:
             data = self.preprocess(data)
@@ -744,9 +841,9 @@ class MaNish(object):
         Returns:
             str: The message id of the message
         Example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> message_id = manish.get_message_id(data)
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> message_id = kwiz.get_message_id(data)
         """
         try:
             data = self.preprocess(data)
@@ -765,9 +862,9 @@ class MaNish(object):
         Returns:
             str: The timestamp of the message
         Example:
-            >>> from manish import Manish
-            >>> manish = Manish(token, phone_number_id)
-            >>> manish.get_message_timestamp(data)
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> kwiz.get_message_timestamp(data)
         """
         try:
             data = self.preprocess(data)
@@ -786,9 +883,9 @@ class MaNish(object):
         Returns:
             dict: The response of the interactive message
         Example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> response = manish.get_interactive_response(data)
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> response = kwiz.get_interactive_response(data)
             >>> intractive_type = response.get("type")
             >>> message_id = response[intractive_type]["id"]
             >>> message_text = response[intractive_type]["title"]
@@ -811,9 +908,9 @@ class MaNish(object):
         Returns:
             dict: The location of the sender
         Example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> manish.get_location(data)
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> kwiz.get_location(data)
         """
         try:
             data = self.preprocess(data)
@@ -833,9 +930,9 @@ class MaNish(object):
         Returns:
             dict: The image_id of an image sent by the sender
         Example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> image_id = manish.get_image(data)
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> image_id = kwiz.get_image(data)
         """
         try:
             data = self.preprocess(data)
@@ -855,9 +952,9 @@ class MaNish(object):
         Returns:
             dict: The audio of the sender
         Example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> manish.get_audio(data)
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> kwiz.get_audio(data)
         """
         try:
             data = self.preprocess(data)
@@ -880,9 +977,9 @@ class MaNish(object):
             dict: The document_id of an image sent by the sender
 
         Example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> document_id = manish.get_document(data)
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> document_id = kwiz.get_document(data)
         """
         data = self.preprocess(data)
         if "messages" in data:
@@ -899,8 +996,8 @@ class MaNish(object):
             str: The mobile number of the sender
         Example:
             >>> from whatsapp import WhatsApp
-            >>> manish = MaNish(token, phone_number_id)
-            >>> mobile = manish.get_mobile(data)
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> mobile = kwiz.get_mobile(data)
         """
         data = self.preprocess(data)
         if "contacts" in data:
@@ -915,9 +1012,9 @@ class MaNish(object):
         Returns:
             dict: Dictionary containing the video details sent by the sender
         Example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> manish.get_video(data)
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> kwiz.get_video(data)
         """
         try:
             data = self.preprocess(data)
@@ -937,9 +1034,9 @@ class MaNish(object):
         Returns:
             str: The type of the message sent by the sender
         Example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> manish.get_message_type(data)
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> kwiz.get_message_type(data)
         """
         try:
             data = self.preprocess(data)
@@ -975,9 +1072,9 @@ class MaNish(object):
         Returns:
             str: The field changed in the data received from the webhook
         Example:
-            >>> from manish import MaNish
-            >>> manish = MaNish(token, phone_number_id)
-            >>> manish.changed_field(data)
+            >>> from kwiz import Kwiz
+            >>> kwiz = Kwiz(token, phone_number_id)
+            >>> kwiz.changed_field(data)
         """
         try:
             return data["entry"][0]["changes"][0]["field"]
@@ -1003,3 +1100,73 @@ class MaNish(object):
         if button.get("footer"):
             data["footer"] = {"text": button.get("footer")}
         return data
+    
+import base64
+import datetime
+import requests
+class M_Pesa_WhatsApp(Kwiz):
+
+    def __init__(self, token: str, phone_number_id: str, mpesa_consumer_key: str, mpesa_consumer_secret: str):
+        super().__init__(token, phone_number_id)
+        self.mpesa_consumer_key = mpesa_consumer_key
+        self.mpesa_consumer_secret = mpesa_consumer_secret
+
+    def get_access_token(self):
+        credentials = base64.b64encode((self.mpesa_consumer_key + ':' + self.mpesa_consumer_secret).encode()).decode()
+        url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
+        headers = {
+            'Authorization': 'Basic ' + credentials,
+            'Content-Type': 'application/json'
+        }
+        response = requests.get(url, headers=headers)
+        return response.json().get('access_token')
+
+    def perform_stk_push(self, phone_number, amount, account_reference="Stock Plug"):
+        business_short_code = '174379'
+        passkey = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919'
+        timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+        password = base64.b64encode((business_short_code + passkey + timestamp).encode()).decode()
+
+        payload = {
+            'BusinessShortCode': business_short_code,
+            'Password': password,
+            'Timestamp': timestamp,
+            'TransactionType': 'CustomerPayBillOnline',
+            'Amount': amount,
+            'PartyA': phone_number,
+            'PartyB': business_short_code,
+            'PhoneNumber': phone_number,
+            'CallBackURL': 'https://yourdomain.com/callback_url',
+            'AccountReference': account_reference,
+            'TransactionDesc': 'Payment for goods/services'
+        }
+
+        access_token = self.get_access_token()
+        url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
+        headers = {
+            'Authorization': 'Bearer ' + access_token,
+            'Content-Type': 'application/json'
+        }
+
+        response = requests.post(url, json=payload, headers=headers)
+        return response.json()
+
+    def send_payment_prompt(self, phone_number, amount):
+        """
+        Sends payment initiation message to WhatsApp
+        """
+        message = f"Hello, please initiate payment of Ksh {amount} to proceed with your order. Reply with *Pay* to confirm."
+        response = self.send_msg(message, phone_number)
+        return response
+
+    def initiate_stk_and_send_message(self, phone_number, amount):
+        # Step 1: Perform M-Pesa STK Push
+        stk_response = self.perform_stk_push(phone_number, amount)
+
+        # Step 2: Send WhatsApp message with payment info
+        if stk_response.get('ResponseCode') == '0':  # Check if payment initiation was successful
+            message = f"Your payment of Ksh {amount} is being processed. Please complete the transaction."
+            whatsapp_response = self.send_msg(message, phone_number)
+            return whatsapp_response, stk_response
+        else:
+            return {"error": "Payment initiation failed"}, stk_response

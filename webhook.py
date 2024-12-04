@@ -4,7 +4,7 @@ import sys
 import json
 import uvicorn
 from loguru import logger
-from manish import MaNish
+from kwiz import MaNish
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse

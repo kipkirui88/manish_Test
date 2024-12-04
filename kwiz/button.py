@@ -31,12 +31,12 @@ class Action:
 
 
 class Button:
-    header: str
+    header: dict  # Allow header to support media as a dictionary
     body: str
     footer: str
     action: Action
 
-    def __init__(self, header: str, body: str, footer: str, action: Action) -> None:
+    def __init__(self, header: dict, body: str, footer: str, action: Action) -> None:
         self.header = header
         self.body = body
         self.footer = footer
